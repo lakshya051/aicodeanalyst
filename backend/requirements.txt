@@ -1,21 +1,21 @@
-Flask==2.3.3
-Flask-Cors==4.0.0
+Flask==3.0.0
+Flask-Cors==4.0.1
 flask-socketio==5.3.6
-python-dotenv==1.0.0
+python-dotenv==1.0.1
 eventlet==0.35.2
 
 # AI & LangChain Libraries
-google-generativeai==0.5.2
-chromadb==0.4.24
-langchain==0.1.16
-langchain-community==0.0.34
+google-generativeai==0.6.0
+chromadb==0.5.0
+langchain==0.2.1
+langchain-community==0.2.1
 langchain-google-genai==1.0.6
-pypdf==4.1.0
+pypdf==4.2.0
 
 # GitHub & Code Analysis Libraries
-GitPython==3.1.42
-requests==2.31.0
-networkx==3.2.1
+GitPython==3.1.43
+requests==2.32.3
+networkx==3.3
 
 # Production Server
-gunicorn==21.2.0
+gunicorn==22.0.0
