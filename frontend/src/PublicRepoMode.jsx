@@ -30,7 +30,8 @@ export function PublicRepoMode() {
     setIsAnalyzed(false);
     setMessages([]);
     try {
-      await axios.post('${import.meta.env.VITE_API_URL}/analyze-url', { repo_url: repoUrl });
+      // CORRECTED SYNTAX: Use backticks for template literals
+      await axios.post(`${import.meta.env.VITE_API_URL}/analyze-url`, { repo_url: repoUrl });
       setIsAnalyzed(true);
       setMessages([{ role: 'model', parts: [`Successfully analyzed repository. You can now ask questions.`] }]);
     } catch (error) {
@@ -49,10 +50,11 @@ export function PublicRepoMode() {
     setUserInput('');
     setIsLoading(true);
     try {
-      const response = await axios.post('${import.meta.env.VITE_API_URL}/url_chat', { question: userInput });
+      // CORRECTED SYNTAX: Use backticks for template literals
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/url_chat`, { question: userInput });
       const aiReply = { role: 'model', parts: [response.data.reply] };
       setMessages([...newMessages, aiReply]);
-    } catch (error) {
+    } catch (error)
       console.error("Error in repo chat:", error);
     } finally {
       setIsLoading(false);
@@ -129,8 +131,8 @@ export function PublicRepoMode() {
             />
             <button 
                 onClick={handleAnalyzeRepo} 
-                disabled={isAnalyzing} // Corrected logic
-                className="..."
+                disabled={!repoUrl || isAnalyzing} // CORRECTED BUTTON LOGIC
+                className="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-500 disabled:bg-slate-700 disabled:cursor-not-allowed flex-shrink-0"
             >
                 {isAnalyzing ? "Analyzing..." : "Analyze Repository"}
             </button>
