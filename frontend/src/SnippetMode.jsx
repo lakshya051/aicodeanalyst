@@ -22,7 +22,7 @@ export function SnippetMode() {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [activeFeature, setActiveFeature] = useState('review'); // review, refactor, translate
+  const [activeFeature, setActiveFeature] = useState('review');
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const chatEndRef = useRef(null);
 
@@ -45,7 +45,6 @@ export function SnippetMode() {
     setIsLoading(true);
 
     try {
-      // CORRECTED SYNTAX: Use backticks for template literals
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/snippet_chat`, { code, history: newMessages });
       const aiReply = { role: 'model', parts: [response.data.reply] };
       setMessages([...newMessages, aiReply]);
@@ -64,7 +63,6 @@ export function SnippetMode() {
     setOutput('');
     setMessages([]);
     try {
-      // CORRECTED SYNTAX: Use backticks for template literals
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/${endpoint}`, payload);
       const data = response.data;
       if (data.refactored_code) setOutput(data.refactored_code);
@@ -100,18 +98,18 @@ export function SnippetMode() {
     if (activeFeature === 'review') {
       return (
         <div className="p-6 overflow-y-auto flex-grow">
-            {!isChatStarted && <div className="flex h-full items-center justify-center text-slate-500">Click "Review" to begin the conversation.</div>}
-            {messages.map((msg, index) => (
-              <div key={index} className={`flex items-start gap-3 my-4 ${msg.role === 'user' ? 'justify-end' : ''}`}>
-                {msg.role === 'model' && <Bot className="w-6 h-6 flex-shrink-0 text-cyan-400" />}
-                <div className={`p-4 rounded-lg max-w-lg ${msg.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-slate-700'}`}>
-                  <div className="prose prose-invert prose-sm max-w-none prose-pre:bg-slate-900"><ReactMarkdown>{msg.parts[0]}</ReactMarkdown></div>
-                </div>
-                {msg.role === 'user' && <User className="w-6 h-6 flex-shrink-0 text-indigo-400" />}
+          {!isChatStarted && <div className="flex h-full items-center justify-center text-slate-500">Click "Review" to begin the conversation.</div>}
+          {messages.map((msg, index) => (
+            <div key={index} className={`flex items-start gap-3 my-4 ${msg.role === 'user' ? 'justify-end' : ''}`}>
+              {msg.role === 'model' && <Bot className="w-6 h-6 flex-shrink-0 text-cyan-400" />}
+              <div className={`p-4 rounded-lg max-w-lg ${msg.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-slate-700'}`}>
+                <div className="prose prose-invert prose-sm max-w-none prose-pre:bg-slate-900"><ReactMarkdown>{msg.parts[0]}</ReactMarkdown></div>
               </div>
-            ))}
-            {isLoading && isChatStarted && <div className="flex items-start gap-3 my-4"><Bot className="w-6 h-6 flex-shrink-0 text-cyan-400" /><div className="p-4 rounded-lg bg-slate-700 flex items-center"><LoaderCircle className="w-5 h-5 animate-spin" /></div></div>}
-            <div ref={chatEndRef} />
+              {msg.role === 'user' && <User className="w-6 h-6 flex-shrink-0 text-indigo-400" />}
+            </div>
+          ))}
+          {isLoading && isChatStarted && <div className="flex items-start gap-3 my-4"><Bot className="w-6 h-6 flex-shrink-0 text-cyan-400" /><div className="p-4 rounded-lg bg-slate-700 flex items-center"><LoaderCircle className="w-5 h-5 animate-spin" /></div></div>}
+          <div ref={chatEndRef} />
         </div>
       );
     }
