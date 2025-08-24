@@ -11,7 +11,6 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import chromadb
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-# This import was missing in some versions
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import networkx as nx
@@ -26,10 +25,7 @@ except Exception as e:
     print(f"Error configuring Google AI: {e}")
 
 client = chromadb.Client()
-# Renamed collections to be more specific and avoid conflicts
-snippet_collection = client.get_or_create_collection(name="snippet_collection")
 url_collection = client.get_or_create_collection(name="url_repo_collection")
-
 
 # --- SNIPPET MODE ENDPOINTS ---
 @app.route('/snippet_chat', methods=['POST'])
@@ -76,7 +72,7 @@ def snippet_translate_handler():
     except Exception as e:
         print(f"Error in snippet_translate: {e}"); return jsonify({'error': 'Translation failed.'}), 500
 
-# --- PUBLIC REPO MODE ENDPOINTS ---
+# --- PUBLIC REPO / FILE MODE ENDPOINTS ---
 @app.route('/analyze-url', methods=['POST'])
 def analyze_url():
     data = request.get_json()
@@ -153,18 +149,13 @@ def url_chat_handler():
         )
         relevant_docs = "\n\n".join(results['documents'][0])
         prompt = f"""You are an AI assistant helping a developer understand a full code repository.
-        
         Based on the following relevant parts of the codebase, answer the user's question.
-        
         **CRITICAL RULE:** When you reference any specific code from the context, you MUST cite its source file. Use the format `[<file_path>]`. For example, `[src/api/auth.js]`. If you reference a specific line, use `[<file_path>:<line_number>]`.
-        
         Relevant Code Chunks (context):
         ---
         {relevant_docs}
         ---
-        
         User's Question: {question}
-        
         Answer with citations:
         """
         model = genai.GenerativeModel('gemini-1.5-flash')
