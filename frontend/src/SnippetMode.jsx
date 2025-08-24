@@ -33,7 +33,7 @@ export function SnippetMode() {
   const handleReview = async (messageContent) => {
     if (isLoading) return;
     setActiveFeature('review');
-    setOutput(''); // Clear static output when starting a review chat
+    setOutput('');
 
     if (!messageContent && messages.length === 0) messageContent = "Please review this code.";
     if (!messageContent) return;
@@ -45,7 +45,8 @@ export function SnippetMode() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('${import.meta.env.VITE_API_URL}/snippet_chat', { code, history: newMessages });
+      // CORRECTED SYNTAX: Use backticks for template literals
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/snippet_chat`, { code, history: newMessages });
       const aiReply = { role: 'model', parts: [response.data.reply] };
       setMessages([...newMessages, aiReply]);
     } catch (error) {
@@ -61,8 +62,9 @@ export function SnippetMode() {
     setIsLoading(true);
     setActiveFeature(feature);
     setOutput('');
-    setMessages([]); // Clear chat messages
+    setMessages([]);
     try {
+      // CORRECTED SYNTAX: Use backticks for template literals
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/${endpoint}`, payload);
       const data = response.data;
       if (data.refactored_code) setOutput(data.refactored_code);
