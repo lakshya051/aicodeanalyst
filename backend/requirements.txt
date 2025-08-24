@@ -19,3 +19,5 @@ pypdf==4.3.1
 
 # For text splitting & loaders
 dataclasses-json==0.6.7
+
+gunicorn==23.0.0
